@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+
 __description__ = 'nmap xml script output parser'
 __author__ = 'Didier Stevens, modify by Sumedt Jitpukdebodin'
-__version__ = '0.1'
+__version__ = '0.2'
 __date__ = '2014/04/30'
 
 import optparse

@@ -1,8 +1,8 @@
 ### This script is originate by Didier Stevens and modified by Sumedt Jitpukdebodin
 ### Version
-- 1.0
+- 0.1
 		- Change some display and fix the bug of parser multiple ports and hosts
-- 1.0.5
+- 0.2
 		- Rearrange columns and add end time column into output csv.
 
 ### How to use
