@@ -63,22 +63,28 @@ class cOutputCSV():
 
 def NmapXmlParser(filenames, options):
     oOuput = cOutputCSV(options)
-    oOuput.Row(['address', 'vendor','date','hostname', 'port', 'state', 'service', 'script', 'output'])
+    oOuput.Row(['Start Time','End time','address', 'vendor','hostname', 'port', 'state', 'service', 'script', 'output'])
     for filename in filenames:
         domNmap = xml.dom.minidom.parse(open(filename, 'r'))
+
 #### Add date
 	nmap_header = domNmap.getElementsByTagName('nmaprun')
 	date = [nmap_header[0].getAttribute('startstr')]
-	#datetime = ''.join(datetimelist)
-#### End of add date
+
+#### Add end date
+	nmap_footer = domNmap.getElementsByTagName('runstats')
+	enddate = [enddate.getAttribute('timestr') for enddate in nmap_footer[0].getElementsByTagName('finished')]
+
         for hosttag in domNmap.getElementsByTagName('host'):
             for port in hosttag.getElementsByTagName('port'):
             	scriptFound = False
+            	row = ['|'.join(date)]
             	addresses = [address.getAttribute('addr') for address in hosttag.getElementsByTagName('address') if address.getAttribute('addrtype') == 'ipv4']
-            	row = ['|'.join(addresses)]
+            	#row = ['|'.join(addresses)]
+            	row.append('|'.join(enddate))
+            	row.append('|'.join(addresses))
             	vendors = [address.getAttribute('vendor') for address in hosttag.getElementsByTagName('address') if address.getAttribute('addrtype') == 'mac']
             	row.append('|'.join(vendors))
-	    	row.append('|'.join(date))
             	hostnames = [hostname.getAttribute('name') for hostname in hosttag.getElementsByTagName('hostname')]
             	row.append('|'.join(hostnames))
 		row.append(port.getAttribute('portid'))
@@ -90,7 +96,7 @@ def NmapXmlParser(filenames, options):
 			scriptFound = True
 			for script in port.getElementsByTagName('script'):
 				row.append(script.getAttribute('id'))
-				row.append(repr(script.getAttribute('output').encode('ascii')))		
+				row.append(repr(script.getAttribute('output').encode('ascii').replace('\n  ','')))
 		oOuput.Row(row)
     oOuput.Close()
 
