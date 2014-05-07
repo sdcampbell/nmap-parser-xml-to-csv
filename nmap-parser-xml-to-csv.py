@@ -86,7 +86,9 @@ def NmapXmlParser(filenames, options):
             	row.append('|'.join(addresses))
             	vendors = [address.getAttribute('vendor') for address in hosttag.getElementsByTagName('address') if address.getAttribute('addrtype') == 'mac']
             	row.append('|'.join(vendors))
-            	hostnames = [hostname.getAttribute('name') for hostname in hosttag.getElementsByTagName('hostname')]
+		### Remove all hostname(user,ptr) to be just user type only.
+            	# hostnames = [hostname.getAttribute('name') for hostname in hosttag.getElementsByTagName('hostname')]
+            	hostnames = [hostname.getAttribute('name') for hostname in hosttag.getElementsByTagName('hostname')  if hostname.getAttribute('type') == 'user']
             	row.append('|'.join(hostnames))
 		row.append(port.getAttribute('portid'))
 		for state in port.getElementsByTagName('state'):
