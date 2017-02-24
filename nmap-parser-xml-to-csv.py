@@ -64,7 +64,7 @@ class cOutputCSV():
 
 def NmapXmlParser(filenames, options):
     oOuput = cOutputCSV(options)
-    oOuput.Row(['Start Time','End time','address', 'vendor','hostname', 'port', 'state', 'service', 'script', 'output'])
+    oOuput.Row(['Start Time','End time','address', 'vendor','hostname', 'port', 'state', 'service', 'product', 'script', 'output'])
     for filename in filenames:
         domNmap = xml.dom.minidom.parse(open(filename, 'r'))
 
@@ -95,6 +95,7 @@ def NmapXmlParser(filenames, options):
 			row.append(state.getAttribute('state'))
 		for service in port.getElementsByTagName('service'):
 			row.append(service.getAttribute('name'))
+                        row.append(service.getAttribute('product') + " " + service.getAttribute('version'))
 		if port.getElementsByTagName('script'):
 			scriptFound = True
 			for script in port.getElementsByTagName('script'):
